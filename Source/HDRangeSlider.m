@@ -84,8 +84,6 @@
     _rightThumbLayer.rangeSlider = self;
     [self.layer addSublayer:_rightThumbLayer];
 
-    _trackLayer.frame =
-        CGRectMake(0, kMargin_Top, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) / 4);
     [self setNeedsLayout];
     [self setNeedsDisplay];
 }
@@ -114,6 +112,8 @@
 {
     [UIView animateWithDuration:0.3
                      animations:^{
+                         _trackLayer.frame = CGRectMake(0, kMargin_Top, CGRectGetWidth(self.bounds),
+                                                        CGRectGetHeight(self.bounds) / 4);
                          [_trackLayer setNeedsDisplay];
                          CGFloat thumbWith = CGRectGetHeight(self.bounds) / 2;
 
