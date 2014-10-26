@@ -12,21 +12,28 @@
 #pragma mark
 #pragma mark HDRangeSlider
 
+// IB_DESIGNABLE
 @interface HDRangeSlider : UIControl
 
-@property (nonatomic, assign) CGFloat minValue;
-@property (nonatomic, assign) CGFloat maxValue;
-@property (nonatomic, assign) CGFloat stageValue;
+// Slider Config
+@property (nonatomic, assign) IBInspectable CGFloat minValue;
+@property (nonatomic, assign) IBInspectable CGFloat maxValue;
+@property (nonatomic, assign) IBInspectable CGFloat stageValue;
+@property (nonatomic, assign) IBInspectable CGFloat margin;
+/**
+ *  Only stage value can choose,default is NO
+ */
+@property (nonatomic, assign) IBInspectable BOOL stageSelectedOnly;
 
-@property (nonatomic, assign) CGFloat leftValue;
-@property (nonatomic, assign) CGFloat rightValue;
-@property (nonatomic, assign) CGFloat margin;
+// Slider Value
+@property (nonatomic, assign) IBInspectable CGFloat leftValue;
+@property (nonatomic, assign) IBInspectable CGFloat rightValue;
 
-@property (nonatomic, strong) UIColor *trackColor;
-@property (nonatomic, strong) UIColor *trackHighlightTintColor;
-@property (nonatomic, strong) UIColor *thumbColor;
-
-@property (nonatomic, strong) UIColor *stageColor;
+// slider ui
+@property (nonatomic, strong) IBInspectable UIColor *trackColor;
+@property (nonatomic, strong) IBInspectable UIColor *trackHighlightTintColor;
+@property (nonatomic, strong) IBInspectable UIColor *thumbColor;
+@property (nonatomic, strong) IBInspectable UIColor *stageColor;
 @property (nonatomic, strong) UIFont *stageFont;
 
 @property (nonatomic, copy) void (^valueChangeBlock)(CGFloat leftValue, CGFloat rightValue);
