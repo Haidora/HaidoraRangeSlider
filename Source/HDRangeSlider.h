@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@import QuartzCore.QuartzCore;
+//@import QuartzCore.QuartzCore;
 
 #pragma mark
 #pragma mark HDRangeSlider
