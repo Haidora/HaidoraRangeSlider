@@ -17,27 +17,30 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-	_slider = [[HDRangeSlider alloc]initWithFrame:CGRectMake(10, 50, 350, 50)];
-//	slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_slider.minValue = 0;
-	_slider.maxValue = 800;
-	_slider.stageValue = 100;
-	_slider.leftValue = 0;
-	_slider.rightValue = 800;
-	_slider.margin = 25;
-	[self.view addSubview:_slider];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    _slider = [[HDRangeSlider alloc] initWithFrame:CGRectMake(50, 50, 200, 31)];
+    _slider.valueChangeBlock = ^(CGFloat x, CGFloat y) { NSLog(@"%@-%@", @(x), @(y)); };
+    //	slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _slider.minValue = 0;
+    _slider.maxValue = 800;
+    //	_slider.stageValue = 100;
+    _slider.leftValue = 0;
+    _slider.rightValue = 800;
+    //	_slider.margin = 25;
+    [self.view addSubview:_slider];
 }
 - (IBAction)getValue:(id)sender
 {
-	NSLog(@"left:%f  right:%f",_slider.leftValue,_slider.rightValue);
+    NSLog(@"left:%f  right:%f", _slider.leftValue, _slider.rightValue);
 }
 
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

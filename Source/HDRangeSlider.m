@@ -8,8 +8,6 @@
 
 #import "HDRangeSlider.h"
 
-#define kMargin_Top 8
-
 #pragma mark
 #pragma mark HDRangeSlider
 
@@ -26,6 +24,8 @@
 @end
 
 @implementation HDRangeSlider
+
+@synthesize trackHeight = _trackHeight;
 
 - (instancetype)init
 {
@@ -62,14 +62,11 @@
     _maxValue = 10;
     _leftValue = _minValue;
     _rightValue = _maxValue;
-    _stageValue = 1;
-    _margin = 25;
-    _thumbColor = [UIColor whiteColor];
-    _trackColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    _trackHighlightTintColor = [UIColor colorWithRed:0.0 green:0.45 blue:0.94 alpha:1.0];
-    _stageColor = _trackHighlightTintColor;
-    _stageFont = [UIFont boldSystemFontOfSize:9];
-    _stageSelectedOnly = NO;
+    _margin = 0;
+
+    _thumbColor = [UIColor colorWithWhite:1.000 alpha:1.000];
+    _trackColor = [UIColor colorWithWhite:1.000 alpha:0.400];
+    _trackHighlightTintColor = [UIColor colorWithRed:0.049 green:0.373 blue:0.964 alpha:0.800];
 
     _trackLayer = [HDRangeSliderTrackLayer layer];
     _trackLayer.contentsScale = [UIScreen mainScreen].scale;
@@ -120,8 +117,8 @@
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    _trackLayer.frame =
-        CGRectMake(0, kMargin_Top, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) / 4);
+    _trackLayer.frame = CGRectMake(0, (CGRectGetHeight(self.bounds) - self.trackHeight) / 2,
+                                   CGRectGetWidth(self.bounds), self.trackHeight);
     [_trackLayer setNeedsDisplay];
 
     CGFloat thumbWidth = self.thumbWidth;
@@ -138,32 +135,23 @@
     [CATransaction commit];
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    NSInteger number = (_maxValue - _minValue) / _stageValue;
-    for (int i = 0; i <= number; i++)
-    {
-        CGFloat posX = [self positionForValue:i * _stageValue];
-        NSString *sep = @"|";
-        NSString *value = [NSString stringWithFormat:@"%0.0f", i * _stageValue];
-        NSDictionary *attributes =
-            @{NSForegroundColorAttributeName : _stageColor, NSFontAttributeName : _stageFont};
-
-        [sep drawAtPoint:CGPointMake(posX, kMargin_Top + CGRectGetHeight(self.bounds) / 4)
-            withAttributes:attributes];
-        [value drawAtPoint:CGPointMake(posX, 3 * kMargin_Top + CGRectGetHeight(self.bounds) / 4)
-            withAttributes:attributes];
-    }
-}
-
 #pragma mark
 #pragma mark Getter
+
+- (CGFloat)trackHeight
+{
+    if (_trackHeight == 0)
+    {
+        _trackHeight = 2;
+    }
+    return _trackHeight;
+}
 
 - (CGFloat)thumbWidth
 {
     if (_thumbWidth == 0)
     {
-        _thumbWidth = CGRectGetHeight(self.bounds) / 2;
+        _thumbWidth = CGRectGetHeight(self.bounds) - 3;
     }
     return _thumbWidth;
 }
@@ -220,31 +208,10 @@
     [self setNeedsDisplay];
 }
 
-- (void)setStageValue:(CGFloat)stageValue
+- (void)setTrackHeight:(CGFloat)trackHeight
 {
-    _stageValue = stageValue;
+    _trackHeight = trackHeight;
     [self setNeedsLayout];
-    [self setNeedsDisplay];
-}
-
-- (void)setStageSelectedOnly:(BOOL)stageSelectedOnly
-{
-    _stageSelectedOnly = stageSelectedOnly;
-    [self setNeedsLayout];
-}
-
-- (void)setStageColor:(UIColor *)stageColor
-{
-    _stageColor = stageColor;
-    [self setNeedsLayout];
-    [self setNeedsDisplay];
-}
-
-- (void)setStageFont:(UIFont *)stageFont
-{
-    _stageFont = stageFont;
-    [self setNeedsLayout];
-    [self setNeedsDisplay];
 }
 
 - (void)setThumbColor:(UIColor *)thumbColor
@@ -302,7 +269,6 @@
             [self boundaryForValue:_rightValue minValue:_leftValue maxValue:_maxValue];
     }
     CGFloat minRange = [self valueForWidth:_thumbWidth];
-    minRange = MAX(minRange, _stageValue);
     if ((_rightValue - _leftValue) < minRange)
     {
         if (_leftThumbLayer.highlighted)
@@ -321,29 +287,12 @@
 {
     if (_leftThumbLayer.highlighted)
     {
-        CGFloat endValue;
-        if (_stageSelectedOnly)
-        {
-            endValue = lrint(_leftValue / _stageValue) * _stageValue;
-        }
-        else
-        {
-            endValue = (_leftValue / _stageValue) * _stageValue;
-        }
-        self.leftValue = [self boundaryForValue:endValue minValue:_minValue maxValue:_rightValue];
+        self.leftValue = [self boundaryForValue:_leftValue minValue:_minValue maxValue:_rightValue];
     }
     else if (_rightThumbLayer.highlighted)
     {
-        CGFloat endValue;
-        if (_stageSelectedOnly)
-        {
-            endValue = lrint(_rightValue / _stageValue) * _stageValue;
-        }
-        else
-        {
-            endValue = (_rightValue / _stageValue) * _stageValue;
-        }
-        self.rightValue = [self boundaryForValue:endValue minValue:_leftValue maxValue:_maxValue];
+        self.rightValue =
+            [self boundaryForValue:_rightValue minValue:_leftValue maxValue:_maxValue];
     }
     _leftThumbLayer.highlighted = NO;
     _rightThumbLayer.highlighted = NO;
