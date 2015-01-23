@@ -62,7 +62,7 @@
     _maxValue = 10;
     _leftValue = _minValue;
     _rightValue = _maxValue;
-    _margin = 0;
+    _margin = self.thumbHeight / 2;
 
     _thumbColor = [UIColor colorWithWhite:1.000 alpha:1.000];
     _trackColor = [UIColor colorWithWhite:1.000 alpha:0.400];
